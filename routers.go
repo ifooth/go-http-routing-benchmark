@@ -61,6 +61,8 @@ import (
 	"gopkg.in/macaron.v1"
 )
 
+var re = regexp.MustCompile(":([^/]*)")
+
 type route struct {
 	method string
 	path   string
@@ -120,6 +122,30 @@ func aceHandleWrite(c *ace.C) {
 
 func aceHandleTest(c *ace.C) {
 	io.WriteString(c.Writer, c.Request.RequestURI)
+}
+
+func httpServeMuxHandleWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.PathValue("name"))
+}
+
+func loadHttpServeMux(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	mux := http.NewServeMux()
+	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "{$1}")
+		mux.HandleFunc(route.method+" "+path, h)
+	}
+	return mux
+}
+
+func loadHttpServeMuxSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	mux := http.NewServeMux()
+	mux.HandleFunc(method+" "+path, handler)
+	return mux
 }
 
 func loadAce(routes []route) http.Handler {
@@ -216,7 +242,6 @@ func loadBear(routes []route) http.Handler {
 	}
 
 	router := bear.New()
-	re := regexp.MustCompile(":([^/]*)")
 	for _, route := range routes {
 		switch route.method {
 		case "GET", "POST", "PUT", "PATCH", "DELETE":
@@ -261,7 +286,6 @@ func loadBeego(routes []route) http.Handler {
 		h = beegoHandlerTest
 	}
 
-	re := regexp.MustCompile(":([^/]*)")
 	app := beego.NewControllerRegister()
 	for _, route := range routes {
 		route.path = re.ReplaceAllString(route.path, ":$1")
@@ -363,8 +387,6 @@ func loadChi(routes []route) http.Handler {
 	if loadTestHandler {
 		h = httpHandlerFuncTest
 	}
-
-	re := regexp.MustCompile(":([^/]*)")
 
 	mux := chi.NewRouter()
 	for _, route := range routes {
@@ -795,8 +817,6 @@ func loadGoRestful(routes []route) http.Handler {
 		h = goRestfulHandlerTest
 	}
 
-	re := regexp.MustCompile(":([^/]*)")
-
 	wsContainer := restful.NewContainer()
 	ws := new(restful.WebService)
 
@@ -855,7 +875,6 @@ func loadGorillaMux(routes []route) http.Handler {
 		h = httpHandlerFuncTest
 	}
 
-	re := regexp.MustCompile(":([^/]*)")
 	m := mux.NewRouter()
 	for _, route := range routes {
 		m.HandleFunc(
@@ -1501,7 +1520,6 @@ func loadTigerTonic(routes []route) http.Handler {
 		h = httpHandlerFuncTest
 	}
 
-	re := regexp.MustCompile(":([^/]*)")
 	mux := tigertonic.NewTrieServeMux()
 	for _, route := range routes {
 		mux.HandleFunc(route.method, re.ReplaceAllString(route.path, "{$1}"), h)
@@ -1588,7 +1606,6 @@ func loadVulcan(routes []route) http.Handler {
 		h = httpHandlerFuncTest
 	}
 
-	re := regexp.MustCompile(":([^/]*)")
 	mux := vulcan.NewMux()
 	for _, route := range routes {
 		path := re.ReplaceAllString(route.path, "<$1>")
@@ -1601,7 +1618,6 @@ func loadVulcan(routes []route) http.Handler {
 }
 
 func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
-	re := regexp.MustCompile(":([^/]*)")
 	mux := vulcan.NewMux()
 	path = re.ReplaceAllString(path, "<$1>")
 	expr := fmt.Sprintf(`Method("%s") && Path("%s")`, method, path)
