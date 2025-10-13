@@ -9,7 +9,7 @@ require (
 	github.com/bmizerany/pat v0.0.0-20170815010413-6226ea591a40
 	github.com/cloudykit/router v0.0.0-20170501012743-15c4ed71df81
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
-	github.com/emicklei/go-restful v2.10.0+incompatible
+	github.com/emicklei/go-restful/v3 v3.13.0
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab
