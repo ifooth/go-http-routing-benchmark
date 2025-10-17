@@ -110,8 +110,8 @@ func BenchmarkHttpServeMux_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkRest_Param(b *testing.B) {
-	router := loadRestSingle("GET", "/user/{name}", httpHandlerFunc)
+func BenchmarkHttpRest_Param(b *testing.B) {
+	router := loadHttpRestSingle("GET", "/user/{name}", httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -333,8 +333,8 @@ func BenchmarkHttpServeMux_Param5(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-func BenchmarkRest_Param5(b *testing.B) {
-	router := loadRestSingle("GET", fiveBrace, httpHandlerFunc)
+func BenchmarkHttpRest_Param5(b *testing.B) {
+	router := loadHttpRestSingle("GET", fiveBrace, httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -557,8 +557,8 @@ func BenchmarkHttpServeMux_Param20(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-func BenchmarkRest_Param20(b *testing.B) {
-	router := loadRestSingle("GET", twentyBrace, httpHandlerFunc)
+func BenchmarkHttpRest_Param20(b *testing.B) {
+	router := loadHttpRestSingle("GET", twentyBrace, httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -777,8 +777,8 @@ func BenchmarkHttpServeMux_ParamWrite(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-func BenchmarkRest_ParamWrite(b *testing.B) {
-	router := loadRestSingle("GET", "/user/{name}", httpServeMuxHandleWrite)
+func BenchmarkHttpRest_ParamWrite(b *testing.B) {
+	router := loadHttpRestSingle("GET", "/user/{name}", httpServeMuxHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

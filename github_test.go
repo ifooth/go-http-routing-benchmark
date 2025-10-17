@@ -275,7 +275,7 @@ var githubAPI = []route{
 
 var (
 	githubHttpServeMux    http.Handler
-	githubRest            http.Handler
+	githubHttpRest        http.Handler
 	githubAce             http.Handler
 	githubAero            http.Handler
 	githubBear            http.Handler
@@ -317,8 +317,8 @@ func init() {
 	calcMem("HttpServeMux", func() {
 		githubHttpServeMux = loadHttpServeMux(githubAPI)
 	})
-	calcMem("Rest", func() {
-		githubHttpServeMux = loadRest(githubAPI)
+	calcMem("HttpRest", func() {
+		githubHttpRest = loadHttpRest(githubAPI)
 	})
 	calcMem("Ace", func() {
 		githubAce = loadAce(githubAPI)
@@ -428,9 +428,9 @@ func BenchmarkHttpServeMux_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubHttpServeMux, req)
 }
-func BenchmarkRest_GithubStatic(b *testing.B) {
+func BenchmarkHttpRest_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
-	benchRequest(b, githubRest, req)
+	benchRequest(b, githubHttpRest, req)
 }
 func BenchmarkAce_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -572,9 +572,9 @@ func BenchmarkHttpServeMux_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubHttpServeMux, req)
 }
-func BenchmarkRest_GithubParam(b *testing.B) {
+func BenchmarkHttpRest_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
-	benchRequest(b, githubRest, req)
+	benchRequest(b, githubHttpRest, req)
 }
 func BenchmarkAce_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
@@ -715,8 +715,8 @@ func BenchmarkVulcan_GithubParam(b *testing.B) {
 func BenchmarkHttpServeMux_GithubAll(b *testing.B) {
 	benchRoutes(b, githubHttpServeMux, githubAPI)
 }
-func BenchmarkRest_GithubAll(b *testing.B) {
-	benchRoutes(b, githubRest, githubAPI)
+func BenchmarkHttpRest_GithubAll(b *testing.B) {
+	benchRoutes(b, githubHttpRest, githubAPI)
 }
 func BenchmarkAce_GithubAll(b *testing.B) {
 	benchRoutes(b, githubAce, githubAPI)

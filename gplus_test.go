@@ -37,7 +37,7 @@ var gplusAPI = []route{
 
 var (
 	gplusHttpServeMux    http.Handler
-	gplusRest            http.Handler
+	gplusHttpRest        http.Handler
 	gplusAce             http.Handler
 	gplusAero            http.Handler
 	gplusBear            http.Handler
@@ -79,8 +79,8 @@ func init() {
 	calcMem("HttpServeMux", func() {
 		gplusHttpServeMux = loadHttpServeMux(gplusAPI)
 	})
-	calcMem("Rest", func() {
-		gplusRest = loadRest(gplusAPI)
+	calcMem("HttpRest", func() {
+		gplusHttpRest = loadHttpRest(gplusAPI)
 	})
 	calcMem("Ace", func() {
 		gplusAce = loadAce(gplusAPI)
@@ -190,9 +190,9 @@ func BenchmarkHttpServeMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusHttpServeMux, req)
 }
-func BenchmarkRest_GPlusStatic(b *testing.B) {
+func BenchmarkHttpRest_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
-	benchRequest(b, gplusRest, req)
+	benchRequest(b, gplusHttpRest, req)
 }
 func BenchmarkAce_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -334,9 +334,9 @@ func BenchmarkHttpServeMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusHttpServeMux, req)
 }
-func BenchmarkRest_GPlusParam(b *testing.B) {
+func BenchmarkHttpRest_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
-	benchRequest(b, gplusRest, req)
+	benchRequest(b, gplusHttpRest, req)
 }
 func BenchmarkAce_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
@@ -478,9 +478,9 @@ func BenchmarkHttpServeMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusHttpServeMux, req)
 }
-func BenchmarkRest_GPlus2Params(b *testing.B) {
+func BenchmarkHttpRest_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
-	benchRequest(b, gplusRest, req)
+	benchRequest(b, gplusHttpRest, req)
 }
 func BenchmarkAce_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
@@ -621,8 +621,8 @@ func BenchmarkVulcan_GPlus2Params(b *testing.B) {
 func BenchmarkHttpServeMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpServeMux, gplusAPI)
 }
-func BenchmarkRest_GPlusAll(b *testing.B) {
-	benchRoutes(b, gplusRest, gplusAPI)
+func BenchmarkHttpRest_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusHttpRest, gplusAPI)
 }
 func BenchmarkAce_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusAce, gplusAPI)

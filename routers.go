@@ -149,7 +149,7 @@ func loadHttpServeMuxSingle(method, path string, handler http.HandlerFunc) http.
 	return mux
 }
 
-func loadRest(routes []route) http.Handler {
+func loadHttpRest(routes []route) http.Handler {
 	h := httpHandlerFunc
 	if loadTestHandler {
 		h = httpHandlerFuncTest
@@ -163,7 +163,7 @@ func loadRest(routes []route) http.Handler {
 	return mux
 }
 
-func loadRestSingle(method, path string, handler http.HandlerFunc) http.Handler {
+func loadHttpRestSingle(method, path string, handler http.HandlerFunc) http.Handler {
 	mux := bkrest.NewRouter()
 	mux.HandleFunc(method+" "+path, handler)
 	return mux

@@ -57,7 +57,7 @@ var parseAPI = []route{
 
 var (
 	parseHttpServeMux    http.Handler
-	parseRest            http.Handler
+	parseHttpRest        http.Handler
 	parseAce             http.Handler
 	parseAero            http.Handler
 	parseBear            http.Handler
@@ -99,8 +99,8 @@ func init() {
 	calcMem("HttpServeMux", func() {
 		parseHttpServeMux = loadHttpServeMux(parseAPI)
 	})
-	calcMem("Rest", func() {
-		parseRest = loadRest(parseAPI)
+	calcMem("HttpRest", func() {
+		parseHttpRest = loadHttpRest(parseAPI)
 	})
 	calcMem("Ace", func() {
 		parseAce = loadAce(parseAPI)
@@ -210,9 +210,9 @@ func BenchmarkHttpServeMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseHttpServeMux, req)
 }
-func BenchmarkRest_ParseStatic(b *testing.B) {
+func BenchmarkHttpRest_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseRest, req)
+	benchRequest(b, parseHttpRest, req)
 }
 func BenchmarkAce_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -354,9 +354,9 @@ func BenchmarkHttpServeMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseHttpServeMux, req)
 }
-func BenchmarkRest_ParseParam(b *testing.B) {
+func BenchmarkHttpRest_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseRest, req)
+	benchRequest(b, parseHttpRest, req)
 }
 func BenchmarkAce_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -498,9 +498,9 @@ func BenchmarkHttpServeMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseHttpServeMux, req)
 }
-func BenchmarkRest_Parse2Params(b *testing.B) {
+func BenchmarkHttpRest_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseRest, req)
+	benchRequest(b, parseHttpRest, req)
 }
 func BenchmarkAce_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
@@ -641,8 +641,8 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 func BenchmarkHttpServeMux_ParseAll(b *testing.B) {
 	benchRoutes(b, parseHttpServeMux, parseAPI)
 }
-func BenchmarkRest_ParseAll(b *testing.B) {
-	benchRoutes(b, parseRest, parseAPI)
+func BenchmarkHttpRest_ParseAll(b *testing.B) {
+	benchRoutes(b, parseHttpRest, parseAPI)
 }
 func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)
