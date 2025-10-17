@@ -24,6 +24,7 @@ import (
 	"github.com/go-playground/lars"
 
 	// "github.com/daryl/zeus"
+	bkrest "github.com/TencentBlueKing/bk-cmdb/pkg/rest"
 	cloudykitrouter "github.com/cloudykit/router"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful/v3"
@@ -144,6 +145,26 @@ func loadHttpServeMux(routes []route) http.Handler {
 
 func loadHttpServeMuxSingle(method, path string, handler http.HandlerFunc) http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc(method+" "+path, handler)
+	return mux
+}
+
+func loadRest(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	mux := bkrest.NewRouter()
+	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "{$1}")
+		mux.HandleFunc(route.method+" "+path, h)
+	}
+	return mux
+}
+
+func loadRestSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	mux := bkrest.NewRouter()
 	mux.HandleFunc(method+" "+path, handler)
 	return mux
 }

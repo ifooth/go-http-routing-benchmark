@@ -1,0 +1,6 @@
+{
+    "go.goroot": "/opt/go/sdk/go1",
+    "go.toolsEnvVars": {
+        "GOEXPERIMENT": "jsonv2"
+    }
+}

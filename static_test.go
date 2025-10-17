@@ -171,6 +171,7 @@ var staticRoutes = []route{
 
 var (
 	staticHttpServeMux http.Handler
+	staticRest         http.Handler
 
 	staticAce             http.Handler
 	staticAero            http.Handler
@@ -216,6 +217,9 @@ func init() {
 			serveMux.HandleFunc(route.path, httpHandlerFunc)
 		}
 		staticHttpServeMux = serveMux
+	})
+	calcMem("Rest", func() {
+		staticRest = loadRest(staticRoutes)
 	})
 
 	calcMem("Ace", func() {
@@ -332,6 +336,9 @@ func BenchmarkAero_StaticAll(b *testing.B) {
 func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpServeMux, staticRoutes)
 }
+func BenchmarkRest_StaticAll(b *testing.B) {
+	benchRoutes(b, staticRest, staticRoutes)
+}
 func BenchmarkBeego_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBeego, staticRoutes)
 }
@@ -405,9 +412,9 @@ func BenchmarkR2router_StaticAll(b *testing.B) {
 	benchRoutes(b, staticR2router, staticRoutes)
 }
 
-// func BenchmarkRevel_StaticAll(b *testing.B) {
-// 	benchRoutes(b, staticRevel, staticRoutes)
-// }
+//	func BenchmarkRevel_StaticAll(b *testing.B) {
+//		benchRoutes(b, staticRevel, staticRoutes)
+//	}
 func BenchmarkRivet_StaticAll(b *testing.B) {
 	benchRoutes(b, staticRivet, staticRoutes)
 }
